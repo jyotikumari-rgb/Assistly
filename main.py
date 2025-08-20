@@ -11,6 +11,10 @@ from file_uploads import handle_pdf_upload, handle_image_upload
 load_dotenv()
 api_key = os.getenv("OPENROUTER_API_KEY")
 
+if not api_key:
+    st.error("⚠️ OPENROUTER_API_KEY is missing! Please add it in your environment variables.")
+    st.stop()
+
 # App config
 st.set_page_config(page_title="GPT Clone", layout="centered")
 
@@ -24,7 +28,6 @@ if "current_chat" not in st.session_state:
     ]
 
 # Sidebar for chat titles
-
 with st.sidebar:
     st.title("🧠 GPT Clone")
 
@@ -64,7 +67,6 @@ with st.sidebar:
                 ]
             st.rerun()
 
-
 # Load current chat
 chat_title = st.session_state.current_chat
 messages = st.session_state.chat_sessions[chat_title]
@@ -84,7 +86,7 @@ if user_input:
     st.chat_message("user").markdown(user_input)
     messages.append(HumanMessage(content=user_input))
 
-    # Rename "New Chat" to actual title (first 5 words)
+    # Rename "New Chat" to actual title (first message snippet)
     if chat_title == "New Chat":
         new_title = user_input.strip().split("\n")[0][:40]  # Limit to 40 chars
         if new_title in st.session_state.chat_sessions:
@@ -105,7 +107,6 @@ if user_input:
 
     st.chat_message("assistant").markdown(response.content)
     messages.append(AIMessage(content=response.content))
-    
 
 # Store uploaded content per chat
 if "uploaded_files" not in state:
