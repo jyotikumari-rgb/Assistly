@@ -86,6 +86,8 @@ mychatbot/
 
 ---
 
+[Live Demo](https://assistly-ejgs8hbqmnfm7tzh9xdsjd.streamlit.app/)
+
 ## Customization
 
 - Change the LLM model in `main.py` by editing the `model` parameter in `ChatOpenAI`.
